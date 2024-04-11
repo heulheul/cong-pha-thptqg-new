@@ -95,7 +95,7 @@ function ListNav() {
         <div className="flex flex-row gap-6">
           <ModeToggle />
           <Button className="w-[80px]">Login</Button>
-          <Button className="w-[80px]">Logout</Button>
+          <Button className="w-[80px] bg-secondary">Sign up</Button>
         </div>
       </div>
     </>
