@@ -67,31 +67,38 @@ function ListSubjects() {
 function ListNav() {
   return (
     <>
-      <NavigationMenu>
-        <NavigationMenuList className="space-x-6">
-          {navItems.map((item) => {
-            return (
-              <NavigationMenuItem key={item.id} className="">
-                <Link href={item.link} legacyBehavior passHref>
-                  <NavigationMenuLink
-                    className={`${navigationMenuTriggerStyle()} ${
-                      IsActive(item.link, 1) ? "bg-muted" : ""
-                    }`}
-                  >
-                    <p
-                      className={`mx-auto text-xl ${
-                        IsActive(item.link, 1) ? "font-bold" : "font-medium"
+      <div className="flex flex-row justify-between">
+        <NavigationMenu>
+          <NavigationMenuList className="space-x-6">
+            {navItems.map((item) => {
+              return (
+                <NavigationMenuItem key={item.id} className="">
+                  <Link href={item.link} legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={`${navigationMenuTriggerStyle()} ${
+                        IsActive(item.link, 1) ? "bg-muted" : ""
                       }`}
                     >
-                      {item.name}
-                    </p>
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            );
-          })}
-        </NavigationMenuList>
-      </NavigationMenu>
+                      <p
+                        className={`mx-auto text-xl ${
+                          IsActive(item.link, 1) ? "font-bold" : "font-medium"
+                        }`}
+                      >
+                        {item.name}
+                      </p>
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              );
+            })}
+          </NavigationMenuList>
+        </NavigationMenu>
+        <div className="flex flex-row gap-6">
+          <ModeToggle />
+          <Button className="w-[80px]">Login</Button>
+          <Button className="w-[80px]">Logout</Button>
+        </div>
+      </div>
     </>
   );
 }
@@ -99,11 +106,11 @@ function ListNav() {
 export default function Navbar() {
   return (
     <>
-      <div className="border-b">
+      <div className="border-b bg-background sticky w-full top-0">
         <div className="container">
-          <nav className="h-14 m-2 flex flex-wrap">
+          <header className="h-12 m-2">
             <ListNav />
-          </nav>
+          </header>
           {IsActive("/thu-vien", 1) && (
             <div className="h-12 flex flex-wrap justify-center pb-2">
               <ListSubjects />
