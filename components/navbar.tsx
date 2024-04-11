@@ -11,6 +11,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { usePathname } from "next/navigation";
+import { Input } from "./ui/input";
 
 const subjects: { id: number; link: string; name: string }[] = [
   { id: 1, link: "/thu-vien/toan", name: "Toán" },
@@ -35,31 +36,26 @@ const IsActive = (path: string, till: number) => {
 function ListSubjects() {
   return (
     <>
-      <NavigationMenu>
-        <NavigationMenuList className="space-x-6">
-          {subjects.map((subject) => {
-            return (
-              <NavigationMenuItem key={subject.id} className="">
-                <Link href={subject.link} legacyBehavior passHref>
-                  <NavigationMenuLink
-                    className={`${navigationMenuTriggerStyle()} ${
-                      IsActive(subject.link, 2) ? "bg-muted" : ""
-                    }`}
-                  >
-                    <p
-                      className={`mx-auto text-xl ${
-                        IsActive(subject.link, 2) ? "font-bold" : "font-medium"
-                      }`}
-                    >
-                      {subject.name}
-                    </p>
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            );
-          })}
-        </NavigationMenuList>
-      </NavigationMenu>
+      <div className="flex justify-center gap-6">
+        {subjects.map((subject) => {
+          return (
+            <Button
+              className={`
+              bg-secondary
+              ${
+                IsActive(subject.link, 2)
+                  ? "font-bold bg-primary text-secondary"
+                  : "font-medium bg-secondary text-primary"
+              } hover:bg-primary hover:text-secondary`}
+              key={subject.id}
+            >
+              <Link href={subject.link} legacyBehavior passHref>
+                {subject.name}
+              </Link>
+            </Button>
+          );
+        })}
+      </div>
     </>
   );
 }
@@ -93,6 +89,9 @@ function ListNav() {
             })}
           </NavigationMenuList>
         </NavigationMenu>
+
+        <Input type="search" placeholder="Tìm kiếm" className="w-72 mr-11" />
+
         <div className="flex flex-row gap-6">
           <ModeToggle />
           <Button className="w-[80px]">Login</Button>
@@ -112,7 +111,7 @@ export default function Navbar() {
             <ListNav />
           </header>
           {IsActive("/thu-vien", 1) && (
-            <div className="h-12 flex flex-wrap justify-center pb-2">
+            <div className="pb-4">
               <ListSubjects />
             </div>
           )}
