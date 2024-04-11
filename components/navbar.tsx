@@ -13,53 +13,103 @@ import {
 import { usePathname } from "next/navigation";
 
 const subjects: { id: number; link: string; name: string }[] = [
-  { id: 1, link: "/home", name: "Home" },
-  { id: 2, link: "/toan", name: "Toán" },
-  { id: 3, link: "/ly", name: "Lý" },
-  { id: 4, link: "/hoa", name: "Hóa" },
-  { id: 5, link: "/tin", name: "Tin" },
+  { id: 1, link: "/thu-vien/toan", name: "Toán" },
+  { id: 2, link: "/thu-vien/ly", name: "Lý" },
+  { id: 3, link: "/thu-vien/hoa", name: "Hóa" },
+  { id: 4, link: "/thu-vien/tin", name: "Tin" },
 ];
 
-export default function Navbar() {
-  const pathname = "/" + usePathname().split("/")[1];
-  const isActive = (path: string) => path === pathname;
+const navItems: { id: number; link: string; name: string }[] = [
+  { id: 1, link: "/dashboard", name: "Trang chính" },
+  { id: 2, link: "/thu-vien", name: "Thư viện" },
+];
 
+const IsActive = (path: string, till: number) => {
+  const pathname = usePathname().split("/");
+  // console.log(path.split("/").slice(-1));
+  // console.log(pathname.slice(-till));
+
+  return path.split("/").slice(-1)[0] === pathname[till];
+};
+
+function ListSubjects() {
   return (
     <>
-      <div className="sticky top-0">
-        <nav className="flex flex-wrap justify-center h-24 border-b bg-background md:px-6">
-          <NavigationMenu>
-            <NavigationMenuList>
-              <div className="flex flex-wrap gap-8">
-                {subjects.map((subject) => {
-                  return (
-                    <NavigationMenuItem key={subject.id}>
-                      <Link href={subject.link} legacyBehavior passHref>
-                        <NavigationMenuLink
-                          className={`${navigationMenuTriggerStyle()} ${
-                            isActive(subject.link) ? "bg-muted" : ""
-                          }
-                            `}
-                        >
-                          <div
-                            className={`mx-auto text-xl ${
-                              isActive(subject.link)
-                                ? "font-bold underline"
-                                : "font-medium"
-                            }`}
-                          >
-                            {subject.name}
-                          </div>
-                        </NavigationMenuLink>
-                      </Link>
-                    </NavigationMenuItem>
-                  );
-                })}
-                <ModeToggle />
-              </div>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </nav>
+      <NavigationMenu>
+        <NavigationMenuList className="space-x-6">
+          {subjects.map((subject) => {
+            return (
+              <NavigationMenuItem key={subject.id} className="">
+                <Link href={subject.link} legacyBehavior passHref>
+                  <NavigationMenuLink
+                    className={`${navigationMenuTriggerStyle()} ${
+                      IsActive(subject.link, 2) ? "bg-muted" : ""
+                    }`}
+                  >
+                    <p
+                      className={`mx-auto text-xl ${
+                        IsActive(subject.link, 2) ? "font-bold" : "font-medium"
+                      }`}
+                    >
+                      {subject.name}
+                    </p>
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            );
+          })}
+        </NavigationMenuList>
+      </NavigationMenu>
+    </>
+  );
+}
+
+function ListNav() {
+  return (
+    <>
+      <NavigationMenu>
+        <NavigationMenuList className="space-x-6">
+          {navItems.map((item) => {
+            return (
+              <NavigationMenuItem key={item.id} className="">
+                <Link href={item.link} legacyBehavior passHref>
+                  <NavigationMenuLink
+                    className={`${navigationMenuTriggerStyle()} ${
+                      IsActive(item.link, 1) ? "bg-muted" : ""
+                    }`}
+                  >
+                    <p
+                      className={`mx-auto text-xl ${
+                        IsActive(item.link, 1) ? "font-bold" : "font-medium"
+                      }`}
+                    >
+                      {item.name}
+                    </p>
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            );
+          })}
+        </NavigationMenuList>
+      </NavigationMenu>
+    </>
+  );
+}
+
+export default function Navbar() {
+  return (
+    <>
+      <div className="border-b">
+        <div className="container">
+          <nav className="h-14 m-2 flex flex-wrap">
+            <ListNav />
+          </nav>
+          {IsActive("/thu-vien", 1) && (
+            <div className="h-12 flex flex-wrap justify-center pb-2">
+              <ListSubjects />
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
